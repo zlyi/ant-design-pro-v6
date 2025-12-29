@@ -98,4 +98,25 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  // 用户管理相关类型
+  type UserListItem = {
+    id?: number;
+    username?: string;
+    nickname?: string;
+    email?: string;
+    phone?: string;
+    avatar?: string;
+    status?: number; // 0: 禁用, 1: 启用
+    role?: string;
+    department?: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
+  type UserList = {
+    data?: UserListItem[];
+    total?: number;
+    success?: boolean;
+  };
 }
