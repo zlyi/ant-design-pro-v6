@@ -307,8 +307,12 @@ const UserManagement: React.FC = () => {
         })}
         actionRef={actionRef}
         rowKey="id"
+        cardBordered
         search={{
           labelWidth: 120,
+        }}
+        cardProps={{
+          style: { backgroundColor: '#fff' },
         }}
         toolBarRender={() => [
           <CreateForm key="create" reload={actionRef.current?.reload} />,
