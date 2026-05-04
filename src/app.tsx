@@ -17,6 +17,7 @@ import { errorConfig } from './requestErrorConfig';
 import '@ant-design/v5-patch-for-react-19';
 
 const isDev = process.env.NODE_ENV === 'development';
+const isTest = process.env.NODE_ENV === 'test';
 const isDevOrTest = isDev || process.env.CI;
 const loginPath = '/user/login';
 
@@ -151,6 +152,6 @@ export const layout: RunTimeLayoutConfig = ({
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request: RequestConfig = {
-  baseURL: isDev ? '' : 'https://proapi.azurewebsites.net',
+  baseURL: isDev || isTest ? '' : 'https://proapi.azurewebsites.net',
   ...errorConfig,
 };

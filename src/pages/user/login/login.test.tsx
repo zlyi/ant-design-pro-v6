@@ -1,8 +1,9 @@
-﻿// @ts-ignore
-import { startMock } from '@@/requestRecordMock';
-import { TestBrowser } from '@@/testBrowser';
+﻿import { TestBrowser } from '@@/testBrowser';
 import { fireEvent, render } from '@testing-library/react';
+import express from 'express';
 import React, { act } from 'react';
+// @ts-expect-error
+import mockData from '../../../../mock/requestRecord.mock';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -16,12 +17,33 @@ let server: {
   close: () => void;
 };
 
+const startMock = (port: number) => {
+  const app = express();
+
+  app.get('*', (req, res) => {
+    const key = `GET ${req.path}`;
+    if (mockData[key]) {
+      res.json(mockData[key]);
+      return;
+    }
+    res.status(404).send(`Mock key ${key} Not Found`);
+  });
+
+  app.post('*', (req, res) => {
+    const key = `POST ${req.path}`;
+    if (mockData[key]) {
+      res.json(mockData[key]);
+      return;
+    }
+    res.status(404).send(`Mock key ${key} Not Found`);
+  });
+
+  return app.listen(port);
+};
+
 describe('Login Page', () => {
-  beforeAll(async () => {
-    server = await startMock({
-      port: 8000,
-      scene: 'login',
-    });
+  beforeAll(() => {
+    server = startMock(8000);
   });
 
   afterAll(() => {
