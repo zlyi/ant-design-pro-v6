@@ -15,7 +15,6 @@ export default async (): Promise<any> => {
     setupFiles: [...(config.setupFiles || []), './tests/setupTests.jsx'],
     globals: {
       ...config.globals,
-      localStorage: null,
     },
   };
 };
