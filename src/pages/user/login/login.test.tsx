@@ -26,7 +26,7 @@ describe('Login Page', () => {
 
   afterAll(async () => {
     server?.close();
-    await waitTime(100);
+    await waitTime(1000);
   });
 
   it('should show login form', async () => {
