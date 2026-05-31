@@ -38,8 +38,14 @@ describe('Login Page', () => {
       });
     });
 
-    await new Promise<void>((resolve) => {
-      server = app.listen(8000, resolve);
+    await new Promise<void>((resolve, reject) => {
+      server = app.listen(8000, (error?: Error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve();
+      });
     });
   });
 
