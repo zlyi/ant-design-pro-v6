@@ -13,6 +13,7 @@ export default async (): Promise<any> => {
       url: 'http://localhost:8000',
     },
     setupFiles: [...(config.setupFiles || []), './tests/setupTests.jsx'],
+    openHandlesTimeout: 2000,
     globals: {
       ...config.globals,
       localStorage: null,
