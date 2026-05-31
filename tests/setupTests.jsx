@@ -62,7 +62,8 @@ Object.defineProperty(global.window.console, 'error', {
     if (
       logStr.includes(
         'Warning: An update to %s inside a test was not wrapped in act(...)',
-      )
+      ) ||
+      logStr.includes('inside a test was not wrapped in act(...)')
     ) {
       return;
     }
