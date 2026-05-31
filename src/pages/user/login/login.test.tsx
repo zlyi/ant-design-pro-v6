@@ -24,8 +24,9 @@ describe('Login Page', () => {
     });
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     server?.close();
+    await waitTime();
   });
 
   it('should show login form', async () => {
