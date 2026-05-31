@@ -2,6 +2,7 @@
 import { startMock } from '@@/requestRecordMock';
 import { TestBrowser } from '@@/testBrowser';
 import { fireEvent, render } from '@testing-library/react';
+import { message } from 'antd';
 import React, { act } from 'react';
 
 const waitTime = (time: number = 100) => {
@@ -25,6 +26,7 @@ describe('Login Page', () => {
   });
 
   afterAll(async () => {
+    message.destroy();
     server?.close();
     await waitTime(1000);
   });
