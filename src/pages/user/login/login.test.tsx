@@ -1,8 +1,8 @@
-﻿// @ts-ignore
-import { startMock } from '@@/requestRecordMock';
-import { TestBrowser } from '@@/testBrowser';
+﻿import { TestBrowser } from '@@/testBrowser';
+import type { Server } from 'node:http';
 import { fireEvent, render } from '@testing-library/react';
 import { message } from 'antd';
+import express from 'express';
 import React, { act } from 'react';
 
 const waitTime = (time: number = 100) => {
@@ -13,22 +13,47 @@ const waitTime = (time: number = 100) => {
   });
 };
 
-let server: {
-  close: () => void;
-};
+let server: Server;
 
 describe('Login Page', () => {
   beforeAll(async () => {
-    server = await startMock({
-      port: 8000,
-      scene: 'login',
+    const app = express();
+
+    app.use(express.json());
+    app.get('/api/currentUser', (_req, res) => {
+      res.json({
+        data: {
+          name: 'Serati Ma',
+          avatar:
+            'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+          userid: '00000001',
+        },
+      });
+    });
+    app.post('/api/login/account', (_req, res) => {
+      res.json({
+        status: 'ok',
+        type: 'account',
+        currentAuthority: 'admin',
+      });
+    });
+
+    await new Promise<void>((resolve) => {
+      server = app.listen(8000, resolve);
     });
   });
 
   afterAll(async () => {
     message.destroy();
-    server?.close();
-    await waitTime(1000);
+    await new Promise<void>((resolve, reject) => {
+      server.close((error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve();
+      });
+    });
   });
 
   it('should show login form', async () => {
