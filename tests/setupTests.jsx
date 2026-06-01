@@ -1,4 +1,16 @@
-﻿import { defaultConfig } from 'antd/lib/theme/internal';
+﻿const React = require('react');
+
+const originalUseId = React.useId;
+if (typeof originalUseId === 'function') {
+  React.useId = () => {
+    const id = originalUseId();
+    return typeof id === 'string'
+      ? id.replace(/^\u00abr(\d+)\u00bb$/, '_r_$1_')
+      : id;
+  };
+}
+
+const { defaultConfig } = require('antd/lib/theme/internal');
 
 defaultConfig.hashed = false;
 
